@@ -1,8 +1,13 @@
 import './App.css';
+import Login from './components/login'
 
 function App() {
   return (
-    <h1>Hello React js</h1>
+    <div>
+      <h3>login</h3>
+      <hr />
+    <Login />
+    </div>
   );
 }
 
