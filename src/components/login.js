@@ -30,7 +30,9 @@ class Login extends Component{
     dologin=()=>{
         const {email, password}=this.state
         axios.post('http://localhost:8000/api/login', {email, password})
-        .then(res=>console.log(res.data.token))
+        .then(res=>{
+            window.location.href='http://localhost:3000/'
+        })
         .catch(err=>{
             this.setState({
                 visible:true,
@@ -47,13 +49,16 @@ class Login extends Component{
     }
    render(){
        return(
-           <div className="container">
+           <div className="container my-5">
                <div className="row justify-content-center">
                <Alert color="danger" isOpen={this.state.visible} toggle={this.onDismiss}>
                  {this.state.errmsg}
                 </Alert>
                     {/* start col */}
-                    <div className="col-md-5">
+                    <div className="col-md-4">
+                        <div className="text-center">
+                            <h3>Login Here</h3>
+                        </div>
                         <div className="custom-card">
                         {/* email */}
                         <FormGroup className="mb-3">

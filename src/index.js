@@ -3,12 +3,21 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Login from './components/login'
+import {Route, BrowserRouter} from 'react-router-dom'
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+//router for page route
+function Router(){
+  return (
+    <React.StrictMode>
+        <BrowserRouter>
+          <Route exact path="/" component={App} />
+          <Route exact path="/login" component={Login} />
+        </BrowserRouter>
+    </React.StrictMode>
+  )
+}
+ReactDOM.render(<Router />, document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function
