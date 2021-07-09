@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, FormGroup, Label, Input, Alert } from 'reactstrap';
+import {Alert, Button, Form} from 'react-bootstrap'
 const axios=require('axios')
 //class name
 class Login extends Component{
@@ -29,15 +29,17 @@ class Login extends Component{
     // login function
     dologin=()=>{
         const {email, password}=this.state
-        axios.post('http://localhost:8000/api/login', {email, password})
+        axios.post('http://localhost:8000/api/login', {email, password}, {withCredentials: true})
         .then(res=>{
-            window.location.href='http://localhost:3000/'
+            console.log(res.data.token)
+            //window.location.href='http://localhost:3000/'
         })
         .catch(err=>{
-            this.setState({
-                visible:true,
-                errmsg:err.response.data.msg
-            })
+            // this.setState({
+            //     visible:true,
+            //     errmsg:err.response.data.msg
+            // })
+            console.log(err)
         })
     }  
     
@@ -50,33 +52,35 @@ class Login extends Component{
    render(){
        return(
            <div className="container my-5">
-               <div className="row justify-content-center">
-               <Alert color="danger" isOpen={this.state.visible} toggle={this.onDismiss}>
-                 {this.state.errmsg}
+               <Alert variant="danger" show={this.state.visible} onClose={() => this.setState({visible:false})} dismissible>
+                        {this.state.errmsg}
                 </Alert>
+               <div className="row justify-content-center">
+               
                     {/* start col */}
                     <div className="col-md-4">
-                        <div className="text-center">
-                            <h3>Login Here</h3>
+                        <div className="text-center mb-3">
+                            <img src="/user.png" width="130" alt='user' className="myimg" />
                         </div>
                         <div className="custom-card">
-                        {/* email */}
-                        <FormGroup className="mb-3">
-                            <Label for="email">Email</Label>
-                            <Input type="email" value={this.state.email} onChange={this.handleEmail} placeholder="Enter email address" />
-                        </FormGroup>
-                        {/* end email */}
-                        {/* password */}
-                        <FormGroup className="mb-3">
-                            <Label for="password">Password</Label>
-                            <Input type="password" value={this.state.password} onChange={this.handlePassword} placeholder="Enter password" />
-                        </FormGroup>
-                        {/* end password */}
-                        {/* buttons */}
-                        <FormGroup>
-                            <Button className="btn btn-danger">Cancel</Button>&nbsp;
-                            <Button className="btn btn-success" onClick={this.dologin}>Login</Button>
-                        </FormGroup>
+                        <Form>
+                        <Form.Group controlId="formBasicEmail">
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control type="email" value={this.state.email} onChange={this.handleEmail} placeholder="Enter email" />
+                        </Form.Group>
+
+                        <Form.Group controlId="formBasicPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" value={this.state.password} onChange={this.handlePassword} placeholder="Password" />
+                        </Form.Group>
+                        <Form.Group controlId="formBasicCheckbox">
+                            <Form.Check type="checkbox" label="Check me out" />
+                        </Form.Group>
+                        <Button variant="primary" onClick={this.dologin} type="button">
+                            Login
+                        </Button>
+                        </Form>
+                        
                         </div>
                     </div>
                     {/* end col */}
