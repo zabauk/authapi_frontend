@@ -1,7 +1,10 @@
 import React, {Component} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Alert, Button, Form} from 'react-bootstrap'
+import Cookies from 'universal-cookie';
 const axios=require('axios')
+const cookies = new Cookies();
+
 //class name
 class Login extends Component{
     //state
@@ -11,7 +14,13 @@ class Login extends Component{
           email:'',
           password:'',
           visible:false,
-          errmsg:''
+          errmsg:'',
+        }
+    }
+    //component did mount
+    componentDidMount(){
+        if(cookies.get("token")){
+            window.location.href="http://localhost:3000/"
         }
     }
     //handle email
