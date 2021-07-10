@@ -31,14 +31,13 @@ class Login extends Component{
         const {email, password}=this.state
         axios.post('http://localhost:8000/api/login', {email, password}, {withCredentials: true})
         .then(res=>{
-            console.log(res.data.token)
-            //window.location.href='http://localhost:3000/'
+            if(res.status===200)window.location.href='http://localhost:3000/'
         })
         .catch(err=>{
-            // this.setState({
-            //     visible:true,
-            //     errmsg:err.response.data.msg
-            // })
+            this.setState({
+                visible:true,
+                errmsg:err.response.data.msg
+            })
             console.log(err)
         })
     }  
