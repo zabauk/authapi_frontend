@@ -2,6 +2,7 @@ import './App.css';
 import Post from './components/posts'
 import React, {useEffect} from 'react'
 import Cookies from 'universal-cookie'
+import {Button} from 'react-bootstrap'
 const cookies=new Cookies()
 
 function App() {
@@ -11,10 +12,25 @@ function App() {
       window.location.href="http://localhost:3000/login"
     }
   })
+
+  //logout
+
+  const logout=(evt)=>{
+    try{
+      cookies.remove("token")
+      window.location.href="http://localhost:3000/login"
+    }catch(err){
+      console.log(err)
+    }
+    
+  }
+
   return (
     <div>
-      <h3>login</h3>
-      <hr />
+      <div className="text-right p-3">
+          <Button onClick={logout} variant="danger">Logout</Button>
+      </div>
+      <hr/>
       <Post />
     </div>
   );
