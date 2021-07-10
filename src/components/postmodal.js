@@ -1,10 +1,17 @@
 import React, {Component} from 'react'
 import {Modal, Button, Form} from 'react-bootstrap'
+import Cookies from 'universal-cookie'
+const axios=require('axios')
+const cookies=new Cookies()
+
 class Postmodal extends Component{
     constructor(props){
         super(props)
         this.state={
+            title:'',
+            body:'',
             show:false,
+            token:cookies.get("token")
         }
         
     }
@@ -20,6 +27,34 @@ class Postmodal extends Component{
             show:true
         })
     }
+
+    //handle title
+    handleTitle=(evt)=>{
+        this.setState({
+            title:evt.target.value
+        })
+    }
+
+    //handle body
+    handleBody=(evt)=>{
+            this.setState({
+                body:evt.target.value
+            })
+    }
+
+    //save data into database
+    saveData=()=>{
+        const {title, body, token}=this.state
+        axios.post('http://localhost:8000/api/create-post', {title, body}, {
+            headers:{'Authorization':token}
+        }).then((res)=>{
+            this.setState({
+                show:false
+            })
+        }).catch(err=>{
+            console.log(err)
+        })
+    }
     render(){
         return(
             <React.Fragment>
@@ -31,11 +66,11 @@ class Postmodal extends Component{
                 <Form>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Post title</Form.Label>
-                        <Form.Control type="text" placeholder="Post title" />
+                        <Form.Control type="text" onChange={this.handleTitle} value={this.state.title} placeholder="Post title" />
                     </Form.Group>
                     <Form.Group controlId="exampleForm.ControlTextarea1">
                         <Form.Label>Post body</Form.Label>
-                        <Form.Control as="textarea" rows={3} placeholder="Enter post body" />
+                        <Form.Control onChange={this.handleBody} value={this.state.body} as="textarea" rows={3} placeholder="Enter post body" />
                     </Form.Group>
                     </Form>
                 </Modal.Body>
@@ -43,7 +78,7 @@ class Postmodal extends Component{
                 <Button variant="secondary" onClick={this.handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={this.handleClose}>
+                <Button variant="primary" onClick={this.saveData}>
                     Save
                 </Button>
                 </Modal.Footer>
