@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import Modal from './postmodal'
 import {ListGroup, Button} from 'react-bootstrap'
-import { useCookies } from 'react-cookie'
+import  Cookies  from 'universal-cookie'
+const cookies=new Cookies()
 const axios=require('axios')
 
 class Post extends Component{
@@ -11,17 +12,18 @@ class Post extends Component{
             posts:[],
             loading:true,
             modal:false,
+            token:cookies.get("token")
         }
         
     }
 
     //component did mount
     componentDidMount(){
-        const token=useCookies['token']
-        console.log('cookie token'+token)
         try{
             //get data
-            axios.get('http://localhost:8000/api/posts').then(res=>{
+            axios.get('http://localhost:8000/api/posts', {
+                headers:{'Authorization':this.state.token}
+            }).then(res=>{
                 this.setState({
                     posts:res.data
                 })
