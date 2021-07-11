@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import Modal from './postmodal'
-import {ListGroup, Button} from 'react-bootstrap'
+import {ListGroup, Button, Alert} from 'react-bootstrap'
 import  Cookies  from 'universal-cookie'
 const cookies=new Cookies()
 const axios=require('axios')
@@ -12,7 +12,8 @@ class Post extends Component{
             posts:[],
             loading:true,
             modal:false,
-            token:cookies.get("token")
+            token:cookies.get("token"),
+            success:false,
         }
         
     }
@@ -46,8 +47,29 @@ class Post extends Component{
     savedPost=(post)=>{
         const newPosts=[...this.state.posts, post]
         this.setState({
-            posts:newPosts
+            posts:newPosts,
+            success:!this.state.success,
         })
+    }
+    //delete post
+    deletePost=(id)=>{
+        try{
+            //get data
+            axios.delete(`http://localhost:8000/api/delete/${id}`, {
+                headers:{'Authorization':this.state.token}
+            }).then(res=>{
+                const {posts}=this.state
+                const newPosts=posts.filter(post=>post._id !==res.data._id)
+                this.setState({
+                    posts:newPosts,
+                    success:!this.state.success,
+                })
+            }).catch(err=>{
+                console.log(err)
+            })
+        }catch(err){
+            console.log(err)
+        }
     }
     //render method
     render(){
@@ -55,13 +77,16 @@ class Post extends Component{
         return(
             <React.Fragment>
                <div className="container">
+               <Alert variant="success" show={this.state.success} onClose={() => this.setState({success:false})} dismissible>
+                       <strong>Success! </strong>Action completed successfully
+                </Alert>
                    <div className="mb-3">
                        <Button variant="primary" onClick={this.openModal}>Create</Button>
                    </div>
                <ListGroup>
                     {posts.map((post, index)=>{
                         return(
-                            <ListGroup.Item>{post.title}</ListGroup.Item>
+                            <ListGroup.Item key={index}>{post.title}  <span className="float-right"><Button className="btn-sm">Edit</Button> <Button className="btn-sm" variant="danger" onClick={()=>this.deletePost(post._id)}>Delete</Button></span></ListGroup.Item>
                         )
                     })}
                 </ListGroup>
