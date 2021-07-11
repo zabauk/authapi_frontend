@@ -12,8 +12,7 @@ class Postmodal extends Component{
             body:'',
             show:false,
             token:cookies.get("token")
-        }
-        
+        } 
     }
     //toggle modal
     handleClose=()=>{
@@ -48,9 +47,11 @@ class Postmodal extends Component{
         axios.post('http://localhost:8000/api/create-post', {title, body}, {
             headers:{'Authorization':token}
         }).then((res)=>{
+            console.log(res.data)
             this.setState({
                 show:false
             })
+            this.props.savedPost(res.data)
         }).catch(err=>{
             console.log(err)
         })

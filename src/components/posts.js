@@ -42,6 +42,13 @@ class Post extends Component{
     openModal=()=>{
         this.showModal()
     }
+    //saved data
+    savedPost=(post)=>{
+        const newPosts=[...this.state.posts, post]
+        this.setState({
+            posts:newPosts
+        })
+    }
     //render method
     render(){
         const {posts}=this.state
@@ -59,7 +66,7 @@ class Post extends Component{
                     })}
                 </ListGroup>
                </div>
-               <Modal ref={this.showModalRef} />
+               <Modal ref={this.showModalRef} savedPost={this.savedPost} />
             </React.Fragment>
         )
     }

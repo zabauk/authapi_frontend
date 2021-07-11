@@ -5,18 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Login from './components/login'
 import {Route, BrowserRouter} from 'react-router-dom'
-import {CookiesProvider} from 'react-cookie'
 
 //router for page route
 function Router(){
   return (
     <React.StrictMode>
-       <CookiesProvider>
        <BrowserRouter>
           <Route exact path="/" component={App} />
           <Route exact path="/login" component={Login} />
         </BrowserRouter>
-       </CookiesProvider>
     </React.StrictMode>
   )
 }

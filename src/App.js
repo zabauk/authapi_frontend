@@ -27,7 +27,9 @@ function App() {
 
   return (
     <div>
+      
       <div className="text-right p-3">
+      <span className="mr-4">Hann Htay</span>
           <Button onClick={logout} variant="danger">Logout</Button>
       </div>
       <hr/>
